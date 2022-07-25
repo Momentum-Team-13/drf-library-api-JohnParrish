@@ -12,6 +12,7 @@ class User(AbstractUser):
 
 
 class Book(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books', null=True)
     author = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     date = models.DateField()
@@ -19,11 +20,11 @@ class Book(models.Model):
     featured = models.BooleanField()
 
     def __str__(self):
-        return self.user, self.title, self.author, self.date, self.genre, self.featured
+        return self.title
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['title', 'author'], name='unique_book')
+            UniqueConstraint(fields=['title', 'author'], name='unique_book')
         ]
 
 
@@ -35,9 +36,20 @@ class Tracking(models.Model):
         (WANT_TO_READ, 'Want to read'), (READING, 'Reading'), (FINISHED, 'Finished'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tracker')
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='book')
-    status = models.CharField(max_length=4, choices=STATUS_CHOICES, default=WANT_TO_READ)
+    status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=WANT_TO_READ)
 
     def __str__(self):
         return self.status
+
+
+class Note(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notes')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='notes', null=True)
+    note = models.TextField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    public = models.BooleanField()
+
+    def __str__(self):
+        return self.note
