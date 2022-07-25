@@ -22,7 +22,7 @@ class TrackedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tracking
-        fields = ('user', 'book', 'status')
+        fields = ('id', 'user', 'book', 'status')
 
 
 class NoteSerializer(serializers.ModelSerializer):
