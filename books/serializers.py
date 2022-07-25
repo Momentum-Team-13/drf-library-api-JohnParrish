@@ -26,6 +26,8 @@ class TrackedSerializer(serializers.ModelSerializer):
 
 
 class NoteSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(slug_field="username", read_only=True)
+    book = serializers.SlugRelatedField(slug_field="title", read_only=True)
 
     class Meta:
         model = Note

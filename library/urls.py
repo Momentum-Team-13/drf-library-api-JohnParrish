@@ -21,5 +21,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/books/', books_views.BookListView.as_view(), name='book_list'),
+    path('api/books/<int:pk>/', books_views.BookDetailView.as_view()),
     path('api/tracked/books/', books_views.TrackedBookListView.as_view()),
+    path('api/<int:pk>/delete/', books_views.DeleteBookView.as_view()),
+    path('api/notes/', books_views.CreateNoteView.as_view()),
 ]
